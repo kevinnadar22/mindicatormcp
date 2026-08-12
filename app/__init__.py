@@ -1,0 +1,1 @@
+"""Mindicator MCP application package."""
