@@ -41,3 +41,11 @@ class DatabaseError(AppError):
     def __init__(self, message: str) -> None:
         """Create a database error."""
         super().__init__(message, code="DATABASE")
+
+
+class IntegrationError(AppError):
+    """Raised when a third-party HTTP call fails."""
+
+    def __init__(self, message: str) -> None:
+        """Create an integration error."""
+        super().__init__(message, code="INTEGRATION")

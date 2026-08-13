@@ -14,10 +14,10 @@ class HealthService:
         """Bind the repository used for meta checks."""
         self._repo = repo
 
-    def check(self) -> schemas.APIResponse[schemas.HealthResponse]:
+    async def check(self) -> schemas.APIResponse[schemas.HealthResponse]:
         """Return health status including city and DB version from meta."""
         try:
-            meta = self._repo.get_meta()
+            meta = await self._repo.get_meta()
             data = schemas.HealthResponse(
                 status="healthy",
                 service=config.settings.service_name,

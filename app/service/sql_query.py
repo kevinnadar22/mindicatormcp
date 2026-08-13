@@ -15,7 +15,7 @@ class SqlQueryService:
         """Bind the repository used for query execution."""
         self._repo = repo
 
-    def execute(
+    async def execute(
         self, request: schemas.ExecuteSqlRequest
     ) -> schemas.APIResponse[schemas.SqlQueryResponse]:
         """Validate SQL, run it, and wrap the result set."""
@@ -23,7 +23,7 @@ class SqlQueryService:
             safe_sql = sql_safety.validate_and_limit(
                 request.sql, config.settings.sql_row_limit
             )
-            columns, rows = self._repo.fetch_all(safe_sql)
+            columns, rows = await self._repo.fetch_all(safe_sql)
             truncated = len(rows) >= config.settings.sql_row_limit
             data = schemas.SqlQueryResponse(
                 columns=columns,

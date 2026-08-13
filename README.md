@@ -9,6 +9,7 @@ FastMCP HTTP server over `mumbai_mindicator.sqlite` (Mumbai transit offline dump
 | `health_check` | Service + DB meta |
 | `get_schema` | Full table/column catalog (also warm-loaded into server instructions on startup) |
 | `execute_sql` | Read-only `SELECT` / `WITH` (LIMIT capped) |
+| `get_live_status` | Live running status for a train number (Mobond tracker) |
 
 ## Setup
 
@@ -60,6 +61,7 @@ Set `OPENAI_API_KEY` in `.env` (or paste when the notebook prompts you).
 - Auto fare for 5 km at night
 - Stops on BEST bus route `1(Up)`
 - Trains after 09:00 at Dadar on the Central line
+- Is train 95338 running late right now?
 
 ## Sample SQL (via `execute_sql`)
 
@@ -82,6 +84,6 @@ LIMIT 10;
 - `app/main.py` — FastMCP wiring
 - `app/service` — business logic + `APIResponse`
 - `app/repository` — SQLite only
-- `app/utils` — SQL safety
+- `app/integrations` — third-party HTTP clients (live trains)
 - `app/domain/schemas` — pydantic models
 - `app/core` — config, exceptions, logging

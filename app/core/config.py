@@ -18,6 +18,8 @@ class Settings(BaseSettings):
     service_version: str = "0.1.0"
     host: str = "127.0.0.1"
     port: int = 8000
+    live_trains_url: str = "https://mobond.com/mtracker/getalllivetrains"
+    live_trains_timeout_ms: int = 8000
 
 
 settings = Settings()
