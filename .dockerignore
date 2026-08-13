@@ -1,0 +1,14 @@
+.venv
+.git
+.cursor
+.env
+__pycache__
+**/__pycache__
+*.py[oc]
+*.egg-info
+notebooks
+README.md
+.env.example
+.python-version
+.dockerignore
+Dockerfile

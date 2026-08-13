@@ -28,6 +28,15 @@ uv run mindicator-mcp
 
 Listens on `http://127.0.0.1:8000` by default (`HOST` / `PORT` in `.env`).
 
+## Docker
+
+```bash
+docker build -t mindicator-mcp .
+docker run --rm -p 8000:8000 mindicator-mcp
+```
+
+MCP URL: `http://127.0.0.1:8000/mcp`
+
 ## Cursor MCP config (HTTP)
 
 ```json
