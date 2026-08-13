@@ -1,7 +1,8 @@
 # Build deps into a venv, then copy only the runtime bits.
+# Use the same /app path in both stages so venv shebangs stay valid.
 FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim AS builder
 
-WORKDIR /build
+WORKDIR /app
 ENV UV_COMPILE_BYTECODE=1 \
     UV_LINK_MODE=copy \
     UV_PYTHON_DOWNLOADS=0
@@ -19,7 +20,7 @@ WORKDIR /app
 
 RUN useradd --create-home --uid 1000 appuser
 
-COPY --from=builder /build/.venv /app/.venv
+COPY --from=builder /app/.venv /app/.venv
 COPY mumbai_mindicator.sqlite ./mumbai_mindicator.sqlite
 
 ENV PATH="/app/.venv/bin:$PATH" \
