@@ -93,6 +93,90 @@ class MindicatorRepository:
             return None
         return {key: _json_safe(row[key]) for key in row.keys()}
 
+    async def search_stations(self, query: str, limit: int) -> list[dict[str, Any]]:
+        """Search stations by name fragment."""
+        sql = (
+            "SELECT name, lat, lon FROM stations "
+            "WHERE UPPER(name) LIKE '%' || UPPER(?) || '%' "
+            "ORDER BY name LIMIT ?"
+        )
+        return await self._fetch_dicts(sql, (query, limit))
+
+    async def find_transfer_paths(
+        self, from_station: str, to_station: str, limit: int
+    ) -> list[dict[str, Any]]:
+        """Find path hints between two stations."""
+        sql = (
+            "SELECT from_station, to_station, path_desc FROM transfer_paths "
+            "WHERE UPPER(from_station) = UPPER(?) AND UPPER(to_station) = UPPER(?) "
+            "LIMIT ?"
+        )
+        return await self._fetch_dicts(sql, (from_station, to_station, limit))
+
+    async def find_ticket_fares(
+        self, from_station: str, to_station: str, limit: int
+    ) -> list[dict[str, Any]]:
+        """Find ticket fare rows for an OD pair."""
+        sql = (
+            "SELECT src_station, dst_station, route_code, fare_1, fare_6 "
+            "FROM ticket_fares "
+            "WHERE UPPER(src_station) = UPPER(?) AND UPPER(dst_station) = UPPER(?) "
+            "LIMIT ?"
+        )
+        return await self._fetch_dicts(sql, (from_station, to_station, limit))
+
+    async def search_bus_routes(
+        self, query: str, agency: str | None, limit: int
+    ) -> list[dict[str, Any]]:
+        """Search bus routes by code, optionally filtered by agency."""
+        if agency:
+            sql = (
+                "SELECT agency, code, stop_count FROM bus_routes "
+                "WHERE UPPER(agency) = UPPER(?) AND UPPER(code) LIKE '%' || UPPER(?) || '%' "
+                "ORDER BY agency, code LIMIT ?"
+            )
+            return await self._fetch_dicts(sql, (agency, query, limit))
+        sql = (
+            "SELECT agency, code, stop_count FROM bus_routes "
+            "WHERE UPPER(code) LIKE '%' || UPPER(?) || '%' "
+            "ORDER BY agency, code LIMIT ?"
+        )
+        return await self._fetch_dicts(sql, (query, limit))
+
+    async def get_bus_route_stops(
+        self, agency: str, route_code: str, limit: int
+    ) -> list[dict[str, Any]]:
+        """Return ordered stops for one bus route."""
+        sql = (
+            "SELECT seq, stop_name, stop_index FROM bus_route_stops "
+            "WHERE UPPER(agency) = UPPER(?) AND UPPER(route_code) = UPPER(?) "
+            "ORDER BY seq LIMIT ?"
+        )
+        return await self._fetch_dicts(sql, (agency, route_code, limit))
+
+    async def get_auto_fare_for_km(self, km: float) -> dict[str, Any] | None:
+        """Return the closest auto fare row at or below the given km."""
+        sql = (
+            "SELECT km, fare, night_fare FROM auto_fares "
+            "WHERE km <= ? ORDER BY km DESC LIMIT 1"
+        )
+        rows = await self._fetch_dicts(sql, (km,))
+        return rows[0] if rows else None
+
+    async def _fetch_dicts(
+        self, sql: str, params: tuple[Any, ...]
+    ) -> list[dict[str, Any]]:
+        """Run a parameterized query and return JSON-safe dict rows."""
+        logger.bind(sql=sql).debug("executing parameterized sql")
+        try:
+            async with self._connect() as conn:
+                cursor = await conn.execute(sql, params)
+                rows = await cursor.fetchall()
+        except sqlite3.Error as exc:
+            logger.bind(sql=sql, error=str(exc)).error("sql failed")
+            raise exceptions.DatabaseError(str(exc)) from exc
+        return [{key: _json_safe(row[key]) for key in row.keys()} for row in rows]
+
     async def fetch_all(self, sql: str) -> tuple[list[str], list[list[Any]]]:
         """Execute a read-only query and return columns plus rows."""
         logger.bind(sql=sql).debug("executing sql")

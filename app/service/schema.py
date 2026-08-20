@@ -42,9 +42,11 @@ class SchemaService:
         """Format catalog text for FastMCP server instructions."""
         lines = [
             "You are connected to the Mumbai Mindicator read-only SQLite database.",
-            "Use execute_sql for timetable/fare/route questions.",
-            "Use get_live_status(train_no) for live running status of a suburban train.",
-            "Prefer get_schema only if you need structured JSON.",
+            "Prefer domain tools when possible:",
+            "- Train: search_stations, find_train_path, get_ticket_fare, get_live_status",
+            "- Bus: search_bus_routes, get_bus_route_stops",
+            "- Auto: get_auto_fare",
+            "Use execute_sql for advanced queries. Use get_schema for the full table catalog.",
             f"City: {catalog.city or 'unknown'} | DB version: {catalog.db_version or 'unknown'}",
             f"Tables ({catalog.table_count}):",
         ]

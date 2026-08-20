@@ -4,12 +4,18 @@ FastMCP HTTP server over `mumbai_mindicator.sqlite` (Mumbai transit offline dump
 
 ## Tools
 
-| Tool | Purpose |
-|------|---------|
-| `health_check` | Service + DB meta |
-| `get_schema` | Full table/column catalog (also warm-loaded into server instructions on startup) |
-| `execute_sql` | Read-only `SELECT` / `WITH` (LIMIT capped) |
-| `get_live_status` | Live running status for a train number (Mobond tracker) |
+| Tool | Title | Purpose |
+|------|-------|---------|
+| `health_check` | Check Health | Service + DB meta |
+| `get_schema` | List Database Tables | Full table/column catalog |
+| `execute_sql` | Run SQL Query | Read-only `SELECT` / `WITH` (LIMIT capped) |
+| `get_live_status` | Live Train Status | Live running status for a train number |
+| `search_stations` | Search Train Stations | Find stations by name |
+| `find_train_path` | Find Train Path | Path hints between two stations |
+| `get_ticket_fare` | Get Ticket Fare | Suburban OD ticket fares |
+| `search_bus_routes` | Search Bus Routes | Find bus routes by code/agency |
+| `get_bus_route_stops` | Get Bus Route Stops | Ordered stops on a route |
+| `get_auto_fare` | Get Auto Fare | Auto rickshaw day/night fare by km |
 
 ## Setup
 
