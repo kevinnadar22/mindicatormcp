@@ -2,6 +2,42 @@
 
 FastMCP HTTP server over `mumbai_mindicator.sqlite` (Mumbai transit offline dump).
 
+## Dataset stats
+
+| | |
+|--|--|
+| City | Mumbai |
+| Version | `2018013101` |
+| Source | Mindicator APK offline dump |
+| Tables | 23 |
+| MCP tools | 10 |
+
+| Category | Table | Rows |
+|----------|-------|-----:|
+| Rail | `stations` | 229 |
+| Rail | `lines` | 17 |
+| Rail | `line_stations` | 371 |
+| Rail | `trains` | 5,049 |
+| Rail | `stop_times` | 87,405 |
+| Rail | `transfer_paths` | 20,251 |
+| Rail | `ticket_fare_routes` | 425 |
+| Rail | `ticket_fares` | 18,222 |
+| Bus | `bus_agencies` | 8 |
+| Bus | `bus_stops` | 9,763 |
+| Bus | `bus_routes` | 2,659 |
+| Bus | `bus_route_stops` | 101,497 |
+| Road fares | `auto_fares` | 586 |
+| Road fares | `taxi_fares` | 586 |
+| Road fares | `coolcab_fares` | 586 |
+| Road fares | `auto_complaints` | 5 |
+| Ferry | `ferry_services` | 32 |
+| Emergency | `emergency_contacts` | 122 |
+| Emergency | `penalties` | 238 |
+| Config | `meta` | 7 |
+| Config | `config_facilities` | 12 |
+| Config | `config_other` | 8 |
+| Config | `config_bus_agencies` | 7 |
+
 ## Tools
 
 | Tool | Title | Purpose |
