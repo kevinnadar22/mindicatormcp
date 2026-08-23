@@ -1,6 +1,7 @@
 # Mindicator MCP
 
-FastMCP HTTP server over `mumbai_mindicator.sqlite` (Mumbai transit offline dump).
+Query Mumbai local trains, buses, and auto fares through an MCP server.  
+Ask in plain English — the agent uses tools for paths, ticket fares, live train status, bus routes, and auto tariffs, or runs read-only SQL on the Mindicator SQLite dump.
 
 ## Dataset stats
 
